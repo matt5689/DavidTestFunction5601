@@ -26,7 +26,14 @@ namespace DavidTestFunction5601
             {
                 var child = Task.Factory.StartNew(() => {
                     Console.WriteLine("Nested task starting.");
-                    Thread.Sleep(Convert.ToInt32(Environment.GetEnvironmentVariable("SleepTime")));
+                    if(Environment.GetEnvironmentVariable("useSpinWait").ToLower() == "true")
+                    {
+                        Thread.SpinWait(Convert.ToInt32(Environment.GetEnvironmentVariable("SleepTime")));
+                    }
+                    else
+                    {
+                        Thread.Sleep(Convert.ToInt32(Environment.GetEnvironmentVariable("SleepTime")));
+                    }
                     Console.WriteLine("Nested task completing.");
                 });
             }       //========================
